@@ -12,7 +12,7 @@ from django.conf import settings
 
 def home(request):
     dic = _get_dic()
-    dic['persons'] = Person.objects.all()
+    dic['persons'] = Person.objects.order_by('end_date')
     return render(request, 'home.html', dic)
 
 @csrf_exempt
