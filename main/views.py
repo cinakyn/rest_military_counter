@@ -6,12 +6,12 @@ from main.models import Person
 import re
 import json 
 from datetime import datetime
-from django.core import serializers
+from django.conf import settings
 
 # Create your views here.
 
 def home(request):
-    dic = {}
+    dic = _get_dic()
     dic['persons'] = Person.objects.all()
     return render(request, 'home.html', dic)
 
@@ -45,4 +45,8 @@ def regist(request):
 
 def _response_json(dic):
     return HttpResponse(json.dumps(dic))
+def _get_dic():
+    dic = {}
+    dic['base_url'] = settings.BASE_URL
+    return dic
 

@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>그날이 오면</title>
         <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <style type="text/css">
+          body {
+            font-family: 나눔고딕, NanumGothic, 맑은 고딕;
+            padding-top: 15px;
+            padding-bottom: 200px;
+          }
           @keyframes prog_ani 
           {
             from {width: 0%;}
@@ -20,36 +26,38 @@
           .name {
             font-weight: bold;
             text-align: right;
-            line-height: 60px;
+            line-height: 50px;
             font-size: 1.4em;
           }
           .progress_section {
-            margin-top: 50px;
+            margin-top: 25px;
           }
           .progress_wrapper {
-            margin-bottom: 10px;
+            margin-bottom: 6px;
           }
           .progress_bg {
             position: relative;
             top: 0;
             left: 0;
             width: 100%;
-            height: 60px;
+            height: 50px;
             background-color: #f5f5f5;
             -moz-border-radius: 25px;
             -webkit-border-radius: 25px;
             border-radius: 25px;
+            border: solid 1px #eeeeee;
+            color: #777777;
           }
           .progress_inner_bg {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 46px;
-            margin: 7px;
-            -moz-border-radius: 25px;
-            -webkit-border-radius: 25px;
-            border-radius: 25px;
+            height: 40px;
+            margin: 5px;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
             overflow:hidden;
           }
           .progress_bar_wrapper {
@@ -67,14 +75,99 @@
             top: 0;
             left: 0;
             width: 100%;
-            line-height: 60px;
+            line-height: 50px;
             text-align: center;
-            font-size: 1.5em;
+            font-size: 1.4em;
+            display: none;
           }
+          .progress_text_start {
+            position: absolute;
+            top: 0;
+            left: 3%;
+            color: #777777;
+            font-size: 0.6em;
+          }
+          .progress_text_end{
+            position: absolute;
+            top: 0;
+            right: 3%;
+            color: #777777;
+            font-size: 0.6em;
+          }
+          .progress_percent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            line-height: 50px;
+            text-align: center;
+            font-size: 1.4em;
+          }
+          .progress_bg:hover .progress_text {
+            display: block;
+          }
+          .progress_bg:hover .progress_percent {
+            display: none;
+          }
+          .reg_form_wrapper {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #f5f5f5;
+            -moz-border-radius: 25px;
+            -webkit-border-radius: 25px;
+            border-radius: 25px;
+            border: solid 1px #eeeeee;
+          }
+          .reg_section_text {
+            font-size: 1.4em;
+            text-align: center;
+            color: #777777;
+            line-height: 50px;
+            cursor: pointer;
+          }
+          #reg_form form{
+            margin-top: 10px;
+          }
+          .poem {
+            font-size: 0.7em;
+          }
+          .poem_image {
+            width: 40%;
+            float: right;
+            margin-top: 20px;
+            clear: top bottom;
+          }
+
         </style>
     </head>
     <body>
         <div class="container">
+          <div class="jumbotron">
+            <h1>그 날이 오면</h1>
+            <img src="http://bit.sparcs.org/~bbashong/data/rt.jpg" class="poem_image"/>
+            <p class="poem">
+              그 날이 오면, 그 날이 오면은<br>
+              삼각산(三角山)이 일어나 더덩실 춤이라도 추고,<br>
+              한강(漢江) 물이 뒤집혀 용솟음칠 그 날이<br>
+              이 목숨이 끊기기 전에 와 주기만 하량이면<br>
+              나는 밤하늘에 날으는 까마귀와 같이<br>
+              종로(鐘路)의 인경(人磬)을 머리로 들이받아 울리오리다.<br>
+              두개골(頭蓋骨)은 깨어져 산산조각이 나도<br>
+              기뻐서 죽사오매 오히려 무슨 한(恨)이 남으오리까.<br>
+            </p>
+            <p class="poem">
+              그 날이 와서 오오 그 날이 와서<br>
+              육조(六曹) 앞 넓은 길을 울며 뛰며 뒹굴어도<br>
+              그래도 넘치는 기쁨에 가슴이 미어질 듯하거든<br>
+              드는 칼로 이 몸의 가죽이라도 벗겨서<br>
+              커다란 북[鼓]을 만들어 들쳐 메고는<br>
+              여러분의 행렬(行列)에 앞장을 서오리다.<br>
+              우렁찬 그 소리를 한 번이라도 듣기만 하면,<br>
+              그 자리에 거꾸러져도 눈을 감겠소이다.<br>
+            </p>
+          </div>
           <div class="progress_section">
             {% for p in persons %}
             <div class="row progress_wrapper" id="progress_{{p.id}}">
@@ -84,64 +177,79 @@
               <div class="col-md-10">
                 <div class="progress_bg">
                   <div class="progress_inner_bg">
-                    <div class="progress_bar_wrapper">
+                    <div class="progress_bar_wrapper" style="width:0%;">
                       <div class="progress_bar">
                       </div>
                     </div>
                   </div>
                   <div class="progress_text">
-                    asdf
+                    <div class="progress_text_start">{{ p.start_date }}</div>
+                    <div class="progress_text_end">{{ p.end_date }}</div>
+                    <span class="progress_text_rest"></span>
+                  </div>
+                  <div class="progress_percent">
                   </div>
                 </div>
               </div>
             </div>
             {% endfor %}
-          </div>
-          <div class="row">
-              <div class="col-md-12">
-                <form class="form-horizontal" role="form">
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">이름</label>
-                    <div class="col-sm-3">
-                      <input type="text" class="form-control" id="inputName" placeholder="10자이내" name="name">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputStart" class="col-sm-2 control-label">시작일</label>
-                    <div class="col-sm-3">
-                      <input type="text" class="form-control" id="inputStart" placeholder="YYYY-MM-DD" name="start">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputEnd" class="col-sm-2 control-label">종료일</label>
-                    <div class="col-sm-3">
-                      <input type="text" class="form-control" id="inputEnd" placeholder="YYYY-MM-DD" name="end">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button class="btn btn-primary" data-loading-text="등록중..." id="submit_btn">등록</button>
-                    </div>
-                  </div>
-                </form>
-                <!-- Modal -->
-                <div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">결과</h4>
-                      </div>
-                      <div class="modal-body">
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
-                      </div>
-                    </div><!-- /.modal-content -->
-                  </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
+            <div class="row reg_section">
+              <div class="col-md-2 name">
               </div>
-            </div>
+              <div class="col-md-10">
+                <div class="reg_form_wrapper">
+                  <div class="reg_section_text" data-toggle="collapse" data-target="#reg_form">
+                    +추가하기
+                  </div>
+                  <div class="row collapse out" id="reg_form">
+                      <div class="col-md-10">
+                        <form class="form-horizontal" role="form">
+                          <div class="form-group">
+                            <label for="inputName" class="col-md-6 control-label">이름</label>
+                            <div class="col-md-3">
+                              <input type="text" class="form-control" id="inputName" placeholder="10자이내" name="name">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputStart" class="col-md-6 control-label">시작일</label>
+                            <div class="col-md-3">
+                              <input type="text" class="form-control" id="inputStart" placeholder="YYYY-MM-DD" name="start">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputEnd" class="col-md-6 control-label">종료일</label>
+                            <div class="col-md-3">
+                              <input type="text" class="form-control" id="inputEnd" placeholder="YYYY-MM-DD" name="end">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-sm-offset-6 col-sm-10">
+                              <button class="btn btn-primary" data-loading-text="등록중..." id="submit_btn">등록</button>
+                            </div>
+                          </div>
+                        </form>
+                        <!-- Modal -->
+                        <div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">결과</h4>
+                              </div>
+                              <div class="modal-body">
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+                              </div>
+                            </div><!-- /.modal-content -->
+                          </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- end wrapper -->
+              </div>
+            </div><!-- end reg_section -->
           </div>
         </div>
         <script type="text/javascript">
@@ -159,37 +267,53 @@
               var end_date = new Date(p.end_date);
               var cur_date = new Date();
               var percent = (cur_date.getTime() - start_date.getTime()) / (end_date.getTime() - start_date.getTime()) * 100;
-              var rest_time = end_date - cur_date
+              percent = Math.max(0, Math.min(100, percent));
+              var rest_time = Math.max(0, end_date - cur_date);
               var rest_day = Math.floor(rest_time / (1000 * 60 * 60 * 24));
               var rest_hour = Math.floor((rest_time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
               var rest_min = Math.floor((rest_time % (1000 * 60 * 60)) / (1000 * 60));
               var rest_sec = Math.floor((rest_time % (1000 * 60)) / (1000));
-              var rest_mili = Math.floor((rest_time % (1000)));
+              var rest_mili = fill_zero(Math.floor((rest_time % (1000))), 3);
               var rest_str = [rest_day, '일 ', rest_hour, '시간 ', rest_min, '분 ', rest_sec, '초 ', rest_mili].join('');
-              g.find('.progress_text').text(rest_str);
+              g.find('.progress_text .progress_text_rest').text(rest_str);
+              var percent_part = ('' + percent).split('.');
+              g.find('.progress_percent').text(fill_zero(percent, 18) + '%');
               g.find('.progress_bar_wrapper').css('width', percent + '%');
             }
+          }
+          var fill_zero = function(raw_str, fill_num) {
+            raw_str = raw_str + ''
+            var n = fill_num - raw_str.length;
+            for (var i = 0; i < n; i++) {
+              raw_str = raw_str + '0';
+            }
+            return raw_str;
           }
           $(function() {
               $('form').submit(function(e) {
                 $('#submit_btn').button('loading');
                 $.ajax(
-                  '/regist/',
+                  '{{ base_url }}regist/',
                   {
                     data : $('form').serialize(),
                     type : 'POST',
                     success : function(data, status) {
                       data = JSON.parse(data);
-                      $('#submitModal .modal-body').text(data.message);
-                      $('#submitModal').modal();
-                      $('#submit_btn').button('reset');
+                      if (data.code == 0) {
+                        window.location.href = '{{ base_url }}';
+                      }
+                      else {
+                        $('#submitModal .modal-body').text(data.message);
+                        $('#submitModal').modal();
+                        $('#submit_btn').button('reset');
+                      }
                     }
                   }
                 );
                 e.preventDefault();
               });
               refresh_time()
-              window.setInterval(refresh_time, 200);
+              window.setInterval(refresh_time, 50);
           });
         </script> 
     </body>
