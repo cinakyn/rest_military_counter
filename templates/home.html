@@ -146,7 +146,7 @@
         <div class="container">
           <div class="jumbotron">
             <h1>그 날이 오면</h1>
-            <img src="http://bit.sparcs.org/~bbashong/data/rt.jpg" class="poem_image"/>
+            <img src="http://bit.sparcs.org/~bbashong/data/rt.jpg" class="poem_image" alts="그날이 오면" />
             <p class="poem">
               그 날이 오면, 그 날이 오면은<br>
               삼각산(三角山)이 일어나 더덩실 춤이라도 추고,<br>
@@ -185,7 +185,6 @@
                   <div class="progress_text">
                     <div class="progress_text_start">{{ p.start_date }}</div>
                     <div class="progress_text_end">{{ p.end_date }}</div>
-                    <span class="progress_text_rest"></span>
                   </div>
                   <div class="progress_percent">
                   </div>
@@ -251,7 +250,6 @@
               </div>
             </div><!-- end reg_section -->
           </div>
-        </div>
         <script type="text/javascript">
           var persons = [
             {% for p in persons %}
@@ -276,13 +274,15 @@
               var rest_mili = fill_zero(Math.floor((rest_time % (1000))), 3);
               var rest_str = [rest_day, '일 ', rest_hour, '시간 ', rest_min, '분 ', rest_sec, '초 ', rest_mili].join('');
               g.find('.progress_text .progress_text_rest').text(rest_str);
-              var percent_part = ('' + percent).split('.');
               g.find('.progress_percent').text(fill_zero(percent, 18) + '%');
               g.find('.progress_bar_wrapper').css('width', percent + '%');
             }
           }
           var fill_zero = function(raw_str, fill_num) {
-            raw_str = raw_str + ''
+            raw_str = raw_str + '';
+            if (raw_str.indexOf('.') < 0) {
+              raw_str = raw_str + '.';
+            }
             var n = fill_num - raw_str.length;
             for (var i = 0; i < n; i++) {
               raw_str = raw_str + '0';
