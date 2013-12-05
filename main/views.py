@@ -33,10 +33,17 @@ def regist(request):
         try:
             start_dt = datetime.strptime(start, '%Y-%m-%d')
             end_dt = datetime.strptime(end, '%Y-%m-%d')
+            cur_dt = datetime.now()
         except Exception as e:
             return _response_json({'code' : 3, 'message' : u'날짜 형식이 잘못되었습니다.'})
         if start_dt >= end_dt:
             return _response_json({'code' : 4, 'message' : u'시작일이 종료일보다 빠릅니다.'})
+        if cur_dt >= end_dt:
+            return _response_json({'code' : 5, 'message' : u'이미 지나간 이벤트입니다.'})
+        if cur_dt <= start_dt:
+            return _response_json({'code' : 6, 'message' : u'아직 시작되지 않은 이벤트입니다.'})
+        if (end_dt - start_dt).total_seconds() > (100 * 3600 * 24 * 365):
+            return _response_json({'code' : 7, 'message' : u'너무 긴 이벤트입니다.'})
         p = Person(name = name, start_date = start_dt, end_date = end_dt)
         p.save()
         return _response_json({'code' : 0, 'message' : u'등록 성공!'})
