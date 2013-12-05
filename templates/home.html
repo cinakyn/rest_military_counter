@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <style type="text/css">
+          @keyframes prog_ani 
+          {
+            from {width: 0%;}
+            to {width: 100%;}
+          }
+
+          @-webkit-keyframes prog_ani/* Safari and Chrome */
+          {
+            from {width: 0%;}
+            to {width: 100%;}
+          }
+          .name {
+            font-weight: bold;
+            text-align: right;
+            line-height: 60px;
+            font-size: 1.4em;
+          }
+          .progress_section {
+            margin-top: 50px;
+          }
+          .progress_wrapper {
+            margin-bottom: 10px;
+          }
+          .progress_bg {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #f5f5f5;
+            -moz-border-radius: 25px;
+            -webkit-border-radius: 25px;
+            border-radius: 25px;
+          }
+          .progress_inner_bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 46px;
+            margin: 7px;
+            -moz-border-radius: 25px;
+            -webkit-border-radius: 25px;
+            border-radius: 25px;
+            overflow:hidden;
+          }
+          .progress_bar_wrapper {
+            width: 100%;
+            height: 100%;
+          }
+          .progress_bar {
+            background-color: #7FC7AF;
+            height: 100%;
+            width: 100%;
+            -webkit-animation: prog_ani 1s;
+          }
+          .progress_text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            line-height: 60px;
+            text-align: center;
+            font-size: 1.5em;
+          }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+          <div class="progress_section">
+            {% for p in persons %}
+            <div class="row progress_wrapper" id="progress_{{p.id}}">
+              <div class="col-md-2 name">
+                {{ p.name }}
+              </div>
+              <div class="col-md-10">
+                <div class="progress_bg">
+                  <div class="progress_inner_bg">
+                    <div class="progress_bar_wrapper">
+                      <div class="progress_bar">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="progress_text">
+                    asdf
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                <form class="form-horizontal" role="form">
+                  <div class="form-group">
+                    <label for="inputName" class="col-sm-2 control-label">이름</label>
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" id="inputName" placeholder="10자이내" name="name">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputStart" class="col-sm-2 control-label">시작일</label>
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" id="inputStart" placeholder="YYYY-MM-DD" name="start">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputEnd" class="col-sm-2 control-label">종료일</label>
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" id="inputEnd" placeholder="YYYY-MM-DD" name="end">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button class="btn btn-primary" data-loading-text="등록중..." id="submit_btn">등록</button>
+                    </div>
+                  </div>
+                </form>
+                <!-- Modal -->
+                <div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">결과</h4>
+                      </div>
+                      <div class="modal-body">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+                      </div>
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript">
+          var persons = [
+            {% for p in persons %}
+              { id : {{ p.id }}, start_date : '{{ p.start_date|date:"c" }}', end_date : '{{ p.end_date|date:"c" }}' }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ]
+          var graphs_jq = $('.progress_wrapper');
+          var refresh_time = function rec_rt() {
+            for (var i = 0; i < persons.length; i++) {
+              var p = persons[i];
+              var g = graphs_jq.eq(i);
+              var start_date = new Date(p.start_date);
+              var end_date = new Date(p.end_date);
+              var cur_date = new Date();
+              var percent = (cur_date.getTime() - start_date.getTime()) / (end_date.getTime() - start_date.getTime()) * 100;
+              var rest_time = end_date - cur_date
+              var rest_day = Math.floor(rest_time / (1000 * 60 * 60 * 24));
+              var rest_hour = Math.floor((rest_time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              var rest_min = Math.floor((rest_time % (1000 * 60 * 60)) / (1000 * 60));
+              var rest_sec = Math.floor((rest_time % (1000 * 60)) / (1000));
+              var rest_mili = Math.floor((rest_time % (1000)));
+              var rest_str = [rest_day, '일 ', rest_hour, '시간 ', rest_min, '분 ', rest_sec, '초 ', rest_mili].join('');
+              g.find('.progress_text').text(rest_str);
+              g.find('.progress_bar_wrapper').css('width', percent + '%');
+            }
+          }
+          $(function() {
+              $('form').submit(function(e) {
+                $('#submit_btn').button('loading');
+                $.ajax(
+                  '/regist/',
+                  {
+                    data : $('form').serialize(),
+                    type : 'POST',
+                    success : function(data, status) {
+                      data = JSON.parse(data);
+                      $('#submitModal .modal-body').text(data.message);
+                      $('#submitModal').modal();
+                      $('#submit_btn').button('reset');
+                    }
+                  }
+                );
+                e.preventDefault();
+              });
+              refresh_time()
+              window.setInterval(refresh_time, 200);
+          });
+        </script> 
+    </body>
+</html>
