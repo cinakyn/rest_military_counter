@@ -6,13 +6,18 @@ from main.models import Person
 import re
 import json 
 from datetime import datetime
+from datetime import date 
 from django.conf import settings
 
 # Create your views here.
 
 def home(request):
     dic = _get_dic()
-    dic['persons'] = Person.objects.order_by('end_date')
+    dic['persons'] = Person.objects.all()
+    now = datetime.now()
+    dic['persons'] = sorted(dic['persons'], key = lambda person: (now - _date2datetime(person.start_date)).total_seconds() 
+            / (_date2datetime(person.end_date) - _date2datetime(person.start_date)).total_seconds(), reverse = True)
+    person = dic['persons'][3]
     return render(request, 'home.html', dic)
 
 @csrf_exempt
@@ -52,8 +57,11 @@ def regist(request):
 
 def _response_json(dic):
     return HttpResponse(json.dumps(dic))
+
 def _get_dic():
     dic = {}
     dic['base_url'] = settings.BASE_URL
     return dic
 
+def _date2datetime(d):
+    return datetime.combine(d, datetime.min.time())
