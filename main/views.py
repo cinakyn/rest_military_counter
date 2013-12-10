@@ -17,7 +17,7 @@ def home(request):
     now = datetime.now()
     dic['persons'] = sorted(dic['persons'], key = lambda person: (now - _date2datetime(person.start_date)).total_seconds() 
             / (_date2datetime(person.end_date) - _date2datetime(person.start_date)).total_seconds(), reverse = True)
-    person = dic['persons'][3]
+    #person = dic['persons'][3]
     return render(request, 'home.html', dic)
 
 @csrf_exempt
