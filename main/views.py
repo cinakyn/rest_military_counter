@@ -49,6 +49,8 @@ def regist(request):
             return _response_json({'code' : 6, 'message' : u'아직 시작되지 않은 이벤트입니다.'})
         if (end_dt - start_dt).total_seconds() > (100 * 3600 * 24 * 365):
             return _response_json({'code' : 7, 'message' : u'너무 긴 이벤트입니다.'})
+        if u' ' in name:
+            return _response_json({'code' : 8, 'message' : u'이름에 공백이 들어갈 수 없습니다.'})
         p = Person(name = name, start_date = start_dt, end_date = end_dt)
         p.save()
         return _response_json({'code' : 0, 'message' : u'등록 성공!'})
