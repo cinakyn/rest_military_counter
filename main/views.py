@@ -13,7 +13,7 @@ from django.conf import settings
 
 def home(request):
     dic = _get_dic()
-    dic['persons'] = Person.objects.all()
+    dic['persons'] = Person.objects.filter(accepted=True)
     now = datetime.now()
     dic['persons'] = sorted(dic['persons'], key = lambda person: (now - _date2datetime(person.start_date)).total_seconds() 
             / (_date2datetime(person.end_date) - _date2datetime(person.start_date)).total_seconds(), reverse = True)
