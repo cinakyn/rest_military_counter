@@ -319,15 +319,27 @@
               var rest_str = [rest_day, '일 ', rest_hour, '시간 ', rest_min, '분 ', rest_sec, '초 ', rest_mili].join('');
               g.find('.progress_text .progress_text_rest').text(rest_str);
               var percent_part = ('' + percent).split('.');
-              g.find('.progress_percent').text(fill_zero(percent, 18) + '%');
+              var ipart = percent_part[0];
+              if (percent_part.length >= 2) {
+                var fpart = percent_part[1];
+              }
+              else {
+                var fpart = '';
+              }
+              g.find('.progress_percent').text(ipart + '.' + fill_zero(fpart, 14) + '%');
               g.find('.progress_bar_wrapper').css('width', percent + '%');
             }
           }
           var fill_zero = function(raw_str, fill_num) {
-            raw_str = raw_str + ''
-            var n = fill_num - raw_str.length;
-            for (var i = 0; i < n; i++) {
-              raw_str = raw_str + '0';
+            raw_str = raw_str + '';
+            if (fill_num > raw_str.length) {
+              var n = fill_num - raw_str.length;
+              for (var i = 0; i < n; i++) {
+                raw_str = raw_str + '0';
+              }
+            }
+            else {
+              raw_str = raw_str.slice(0, fill_num);
             }
             return raw_str;
           }
