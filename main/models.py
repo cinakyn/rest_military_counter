@@ -10,4 +10,15 @@ class Person(models.Model):
 
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ('accepted', 'name', 'start_date', 'end_date')
+    list_display = ('id', 'name', 'start_date', 'end_date', 'accepted')
+    ordering = ['accepted', 'id']
+    actions = ['make_accepted', 'make_denied']
+    
+    def make_accepted(self, request, query_set):
+        query_set.update(accepted=True)
+
+    def make_denied(self, request, query_set):
+        query_set.update(accepted=False)
+    
+    make_accepted.short_description = 'make accepted'
+    make_denied.short_description = 'make denied'
